@@ -6,30 +6,67 @@
     <title>Database Study Tracker</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body {
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
+
+        body {
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a3e 50%, #16213e 100%);
+            background-attachment: fixed;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism effect */
+        .glass {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid rgba(148, 163, 184, 0.15);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .glass:hover {
+            background: rgba(30, 41, 59, 0.75);
+            border-color: rgba(148, 163, 184, 0.25);
+        }
+
+        .glass-strong {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(20px) saturate(200%);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            box-shadow: 0 20px 60px rgba(16, 185, 129, 0.1);
+        }
+
+        /* Checkbox styling */
         .checkbox-custom {
             appearance: none;
-            width: 22px;
-            height: 22px;
-            border: 2px solid #404258;
-            border-radius: 6px;
+            width: 24px;
+            height: 24px;
+            border: 2.5px solid rgba(148, 163, 184, 0.4);
+            border-radius: 8px;
             cursor: pointer;
             position: relative;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            background: #16213e;
+            background: rgba(15, 23, 42, 0.8);
             flex-shrink: 0;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
+
         .checkbox-custom:hover {
             border-color: #10b981;
-            transform: scale(1.05);
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
+            transform: scale(1.1);
+            background: rgba(16, 185, 129, 0.1);
         }
+
         .checkbox-custom:checked {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             border-color: #10b981;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
             transform: scale(1);
         }
+
         .checkbox-custom:checked::after {
             content: '✓';
             position: absolute;
@@ -37,61 +74,155 @@
             left: 50%;
             transform: translate(-50%, -50%);
             color: white;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: bold;
-            animation: checkmark 0.3s ease-in-out;
+            animation: checkPulse 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        @keyframes checkmark {
-            0% { transform: translate(-50%, -50%) scale(0); }
+
+        @keyframes checkPulse {
+            0% { transform: translate(-50%, -50%) scale(0) rotateZ(-45deg); }
             50% { transform: translate(-50%, -50%) scale(1.2); }
-            100% { transform: translate(-50%, -50%) scale(1); }
+            100% { transform: translate(-50%, -50%) scale(1) rotateZ(0deg); }
         }
+
+        /* Chapter cards */
         .chapter-card {
-            background: rgba(22, 33, 62, 0.6);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(64, 66, 88, 0.5);
-            transition: all 0.3s ease;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-radius: 16px;
         }
+
         .chapter-card:hover {
-            background: rgba(22, 33, 62, 0.8);
-            border-color: rgba(16, 185, 129, 0.3);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.1);
+            transform: translateY(-8px);
+            background: rgba(30, 41, 59, 0.85) !important;
         }
-        .glass-effect {
-            background: rgba(22, 33, 62, 0.8);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(64, 66, 88, 0.5);
+
+        .chapter-card .topic-item {
+            transition: all 0.3s ease;
+            padding: 12px;
+            border-radius: 10px;
+            margin: -12px;
         }
+
+        .chapter-card .topic-item:hover {
+            background: rgba(16, 185, 129, 0.05);
+            padding-left: 16px;
+        }
+
+        /* Progress ring animation */
         .progress-ring {
-            transition: stroke-dashoffset 0.5s ease;
+            transition: stroke-dashoffset 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.3));
         }
+
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #10b981 0%, #06b6d4 50%, #0ea5e9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Button styling */
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.2);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 50px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.95);
+        }
+
+        /* Stat display */
+        .stat-box {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(30, 41, 59, 0.3);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #059669 0%, #0284c7 100%);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .chapter-card:nth-child(1) { animation-delay: 0.1s; }
+        .chapter-card:nth-child(2) { animation-delay: 0.2s; }
+        .chapter-card:nth-child(3) { animation-delay: 0.3s; }
+        .chapter-card:nth-child(4) { animation-delay: 0.4s; }
+        .chapter-card:nth-child(5) { animation-delay: 0.5s; }
+        .chapter-card:nth-child(6) { animation-delay: 0.6s; }
     </style>
 </head>
 <body class="min-h-screen p-4 md:p-8">
-    <div class="max-w-6xl mx-auto">
+    <div class="max-w-7xl mx-auto">
         <!-- Header -->
-        <div class="glass-effect rounded-2xl p-6 md:p-8 mb-6 shadow-2xl">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div class="glass-strong rounded-3xl p-8 md:p-10 mb-8 shadow-2xl animate-in">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
                 <div>
-                    <h1 class="text-3xl md:text-4xl font-bold text-white mb-2 bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+                    <h1 class="text-4xl md:text-5xl font-bold gradient-text mb-3">
                         Database Study Tracker
                     </h1>
-                    <p class="text-gray-400 text-sm md:text-base">Advanced Database Management Systems</p>
+                    <p class="text-slate-300 text-base md:text-lg">Advanced Database Management Systems • Complete Study Guide</p>
                 </div>
-                <div class="flex items-center gap-4">
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-emerald-400" id="totalProgress">0</div>
-                        <div class="text-xs text-gray-400">Completed</div>
+                <div class="flex items-center gap-6">
+                    <div class="stat-box rounded-2xl p-6 text-center backdrop-blur-md">
+                        <div class="text-4xl font-bold text-emerald-400 mb-1" id="totalProgress">0</div>
+                        <div class="text-xs text-slate-400 uppercase tracking-wider">Topics Completed</div>
                     </div>
-                    <div class="relative w-20 h-20">
-                        <svg class="transform -rotate-90 w-20 h-20">
-                            <circle cx="40" cy="40" r="36" stroke="rgba(64, 66, 88, 0.5)" stroke-width="6" fill="none"/>
-                            <circle id="progressRing" cx="40" cy="40" r="36" stroke="#10b981" stroke-width="6" fill="none" 
-                                    stroke-dasharray="226" stroke-dashoffset="226" class="progress-ring" stroke-linecap="round"/>
+                    <div class="relative w-24 h-24">
+                        <svg class="transform -rotate-90 w-24 h-24" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="40" stroke="rgba(148, 163, 184, 0.2)" stroke-width="8" fill="none"/>
+                            <circle id="progressRing" cx="50" cy="50" r="40" stroke="url(#gradient)" stroke-width="8" fill="none" 
+                                    stroke-dasharray="251.3" stroke-dashoffset="251.3" class="progress-ring" stroke-linecap="round"/>
+                            <defs>
+                                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
                         </svg>
                         <div class="absolute inset-0 flex items-center justify-center">
-                            <span class="text-white font-bold" id="progressPercent">0%</span>
+                            <span class="text-white font-bold text-lg" id="progressPercent">0%</span>
                         </div>
                     </div>
                 </div>
@@ -99,198 +230,214 @@
         </div>
 
         <!-- Chapters Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-7 mb-8">
             <!-- Chapter 1 -->
-            <div class="chapter-card rounded-xl p-6 shadow-xl">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-xl font-bold text-white">Chapter 1</h2>
-                    <span class="text-emerald-400 font-semibold" id="ch1-count">0/6</span>
+            <div class="glass chapter-card rounded-2xl p-7 animate-in">
+                <div class="flex items-center justify-between mb-5 pb-4 border-b border-slate-700/50">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">Chapter 1</h2>
+                        <p class="text-emerald-400 text-sm font-semibold mt-1">Query Processing & Optimization</p>
+                    </div>
+                    <span class="text-emerald-400 font-bold text-lg stat-box px-4 py-2 rounded-xl" id="ch1-count">0/6</span>
                 </div>
-                <h3 class="text-emerald-400 font-semibold mb-4">Query Processing & Optimization</h3>
-                <div class="space-y-3">
-                    <label class="flex items-start gap-3 cursor-pointer group">
+                <div class="space-y-2">
+                    <label class="flex items-start gap-4 cursor-pointer group topic-item">
                         <input type="checkbox" class="checkbox-custom mt-1" data-chapter="1">
-                        <span class="text-gray-300 text-sm group-hover:text-white transition-colors">Query Processing and Optimization</span>
+                        <span class="text-slate-300 text-sm leading-relaxed group-hover:text-white transition-colors">Explain Query Processing and Optimization</span>
                     </label>
-                    <label class="flex items-start gap-3 cursor-pointer group">
+                    <label class="flex items-start gap-4 cursor-pointer group topic-item">
                         <input type="checkbox" class="checkbox-custom mt-1" data-chapter="1">
-                        <span class="text-gray-300 text-sm group-hover:text-white transition-colors">Catalog information for Cost Estimation</span>
+                        <span class="text-slate-300 text-sm leading-relaxed group-hover:text-white transition-colors">Explain Catalog information for Cost Estimation</span>
                     </label>
-                    <label class="flex items-start gap-3 cursor-pointer group">
+                    <label class="flex items-start gap-4 cursor-pointer group topic-item">
                         <input type="checkbox" class="checkbox-custom mt-1" data-chapter="1">
-                        <span class="text-gray-300 text-sm group-hover:text-white transition-colors">Join operation</span>
+                        <span class="text-slate-300 text-sm leading-relaxed group-hover:text-white transition-colors">Explain Join operation</span>
                     </label>
-                    <label class="flex items-start gap-3 cursor-pointer group">
+                    <label class="flex items-start gap-4 cursor-pointer group topic-item">
                         <input type="checkbox" class="checkbox-custom mt-1" data-chapter="1">
-                        <span class="text-gray-300 text-sm group-hover:text-white transition-colors">Cost estimation for Sorting, Set operation</span>
+                        <span class="text-slate-300 text-sm leading-relaxed group-hover:text-white transition-colors">Explain cost estimation for Sorting, Set operation</span>
                     </label>
-                    <label class="flex items-start gap-3 cursor-pointer group">
+                    <label class="flex items-start gap-4 cursor-pointer group topic-item">
                         <input type="checkbox" class="checkbox-custom mt-1" data-chapter="1">
-                        <span class="text-gray-300 text-sm group-hover:text-white transition-colors">Measure of Query Cost</span>
+                        <span class="text-slate-300 text-sm leading-relaxed group-hover:text-white transition-colors">Explain Measure of Query Cost</span>
                     </label>
-                    <label class="flex items-start gap-3 cursor-pointer group">
+                    <label class="flex items-start gap-4 cursor-pointer group topic-item">
                         <input type="checkbox" class="checkbox-custom mt-1" data-chapter="1">
-                        <span class="text-gray-300 text-sm group-hover:text-white transition-colors">Evaluation and Transformation of Expressions</span>
+                        <span class="text-slate-300 text-sm leading-relaxed group-hover:text-white transition-colors">Explain Evaluation and Transformation of Expressions</span>
                     </label>
                 </div>
             </div>
 
             <!-- Chapter 2 -->
-            <div class="chapter-card rounded-xl p-6 shadow-xl">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-xl font-bold text-white">Chapter 2</h2>
-                    <span class="text-emerald-400 font-semibold" id="ch2-count">0/3</span>
+            <div class="glass chapter-card rounded-2xl p-7 animate-in">
+                <div class="flex items-center justify-between mb-5 pb-4 border-b border-slate-700/50">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">Chapter 2</h2>
+                        <p class="text-emerald-400 text-sm font-semibold mt-1">Object-Relational Databases</p>
+                    </div>
+                    <span class="text-emerald-400 font-bold text-lg stat-box px-4 py-2 rounded-xl" id="ch2-count">0/3</span>
                 </div>
-                <h3 class="text-emerald-400 font-semibold mb-4">Object-Relational Databases</h3>
-                <div class="space-y-3">
-                    <label class="flex items-start gap-3 cursor-pointer group">
+                <div class="space-y-2">
+                    <label class="flex items-start gap-4 cursor-pointer group topic-item">
                         <input type="checkbox" class="checkbox-custom mt-1" data-chapter="2">
-                        <span class="text-gray-300 text-sm group-hover:text-white transition-colors">Structured data types with example & Operations</span>
+                        <span class="text-slate-300 text-sm leading-relaxed group-hover:text-white transition-colors">Explain Structured data types with example. Also explain Operation on It</span>
                     </label>
-                    <label class="flex items-start gap-3 cursor-pointer group">
+                    <label class="flex items-start gap-4 cursor-pointer group topic-item">
                         <input type="checkbox" class="checkbox-custom mt-1" data-chapter="2">
-                        <span class="text-gray-300 text-sm group-hover:text-white transition-colors">Encapsulation, Inheritance, ADTs and Object Identity</span>
+                        <span class="text-slate-300 text-sm leading-relaxed group-hover:text-white transition-colors">Explain the term Encapsulation, Inheritance, ADTs and Object Identity</span>
                     </label>
-                    <label class="flex items-start gap-3 cursor-pointer group">
+                    <label class="flex items-start gap-4 cursor-pointer group topic-item">
                         <input type="checkbox" class="checkbox-custom mt-1" data-chapter="2">
-                        <span class="text-gray-300 text-sm group-hover:text-white transition-colors">Storage and Access method of Object Relational Database</span>
+                        <span class="text-slate-300 text-sm leading-relaxed group-hover:text-white transition-colors">Explain Storage and Access method of Object Relational Database</span>
                     </label>
                 </div>
             </div>
 
             <!-- Chapter 3 -->
-            <div class="chapter-card rounded-xl p-6 shadow-xl">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-xl font-bold text-white">Chapter 3</h2>
-                    <span class="text-emerald-400 font-semibold" id="ch3-count">0/7</span>
+            <div class="glass chapter-card rounded-2xl p-7 animate-in">
+                <div class="flex items-center justify-between mb-5 pb-4 border-b border-slate-700/50">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">Chapter 3</h2>
+                        <p class="text-emerald-400 text-sm font-semibold mt-1">Parallel & Distributed Databases</p>
+                    </div>
+                    <span class="text-emerald-400 font-bold text-lg stat-box px-4 py-2 rounded-xl" id="ch3-count">0/7</span>
                 </div>
-                <h3 class="text-emerald-400 font-semibold mb-4">Parallel & Distributed Databases</h3>
-                <div class="space-y-3">
-                    <label class="flex items-start gap-3 cursor-pointer group">
+                <div class="space-y-2">
+                    <label class="flex items-start gap-4 cursor-pointer group topic-item">
                         <input type="checkbox" class="checkbox-custom mt-1" data-chapter="3">
-                        <span class="text-gray-300 text-sm group-hover:text-white transition-colors">Parallel database and architecture</span>
+                        <span class="text-slate-300 text-sm leading-relaxed group-hover:text-white transition-colors">Explain Parallel database and architecture of it</span>
                     </label>
-                    <label class="flex items-start gap-3 cursor-pointer group">
+                    <label class="flex items-start gap-4 cursor-pointer group topic-item">
                         <input type="checkbox" class="checkbox-custom mt-1" data-chapter="3">
-                        <span class="text-gray-300 text-sm group-hover:text-white transition-colors">Parallel query evaluation and Query optimization</span>
+                        <span class="text-slate-300 text-sm leading-relaxed group-hover:text-white transition-colors">Explain technique for parallel query evaluation and Query optimization</span>
                     </label>
-                    <label class="flex items-start gap-3 cursor-pointer group">
+                    <label class="flex items-start gap-4 cursor-pointer group topic-item">
                         <input type="checkbox" class="checkbox-custom mt-1" data-chapter="3">
-                        <span class="text-gray-300 text-sm group-hover:text-white transition-colors">Parallelizing Individual operations</span>
+                        <span class="text-slate-300 text-sm leading-relaxed group-hover:text-white transition-colors">Explain parallelizing Individual operations</span>
                     </label>
-                    <label class="flex items-start gap-3 cursor-pointer group">
+                    <label class="flex items-start gap-4 cursor-pointer group topic-item">
                         <input type="checkbox" class="checkbox-custom mt-1" data-chapter="3">
-                        <span class="text-gray-300 text-sm group-hover:text-white transition-colors">DBMS architecture</span>
+                        <span class="text-slate-300 text-sm leading-relaxed group-hover:text-white transition-colors">Explain DBMS architecture</span>
                     </label>
-                    <label class="flex items-start gap-3 cursor-pointer group">
+                    <label class="flex items-start gap-4 cursor-pointer group topic-item">
                         <input type="checkbox" class="checkbox-custom mt-1" data-chapter="3">
-                        <span class="text-gray-300 text-sm group-hover:text-white transition-colors">Query Processing in Distributed Databases</span>
+                        <span class="text-slate-300 text-sm leading-relaxed group-hover:text-white transition-colors">Explain Query Processing and Optimization in Distributed Databases</span>
                     </label>
-                    <label class="flex items-start gap-3 cursor-pointer group">
+                    <label class="flex items-start gap-4 cursor-pointer group topic-item">
                         <input type="checkbox" class="checkbox-custom mt-1" data-chapter="3">
-                        <span class="text-gray-300 text-sm group-hover:text-white transition-colors">Distributed Concurrency Control</span>
+                        <span class="text-slate-300 text-sm leading-relaxed group-hover:text-white transition-colors">Explain Distributed Concurrency Control</span>
                     </label>
-                    <label class="flex items-start gap-3 cursor-pointer group">
+                    <label class="flex items-start gap-4 cursor-pointer group topic-item">
                         <input type="checkbox" class="checkbox-custom mt-1" data-chapter="3">
-                        <span class="text-gray-300 text-sm group-hover:text-white transition-colors">Distributed Catalog Management</span>
+                        <span class="text-slate-300 text-sm leading-relaxed group-hover:text-white transition-colors">Explain Distributed Catalog Management</span>
                     </label>
                 </div>
             </div>
 
             <!-- Chapter 4 -->
-            <div class="chapter-card rounded-xl p-6 shadow-xl">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-xl font-bold text-white">Chapter 4</h2>
-                    <span class="text-emerald-400 font-semibold" id="ch4-count">0/7</span>
+            <div class="glass chapter-card rounded-2xl p-7 animate-in">
+                <div class="flex items-center justify-between mb-5 pb-4 border-b border-slate-700/50">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">Chapter 4</h2>
+                        <p class="text-emerald-400 text-sm font-semibold mt-1">Data Mining & Warehousing</p>
+                    </div>
+                    <span class="text-emerald-400 font-bold text-lg stat-box px-4 py-2 rounded-xl" id="ch4-count">0/7</span>
                 </div>
-                <h3 class="text-emerald-400 font-semibold mb-4">Data Mining & Warehousing</h3>
-                <div class="space-y-3">
-                    <label class="flex items-start gap-3 cursor-pointer group">
+                <div class="space-y-2">
+                    <label class="flex items-start gap-4 cursor-pointer group topic-item">
                         <input type="checkbox" class="checkbox-custom mt-1" data-chapter="4">
-                        <span class="text-gray-300 text-sm group-hover:text-white transition-colors">Decision Support System</span>
+                        <span class="text-slate-300 text-sm leading-relaxed group-hover:text-white transition-colors">Explain Decision Support System</span>
                     </label>
-                    <label class="flex items-start gap-3 cursor-pointer group">
+                    <label class="flex items-start gap-4 cursor-pointer group topic-item">
                         <input type="checkbox" class="checkbox-custom mt-1" data-chapter="4">
-                        <span class="text-gray-300 text-sm group-hover:text-white transition-colors">Data warehouse</span>
+                        <span class="text-slate-300 text-sm leading-relaxed group-hover:text-white transition-colors">Explain Data warehouse</span>
                     </label>
-                    <label class="flex items-start gap-3 cursor-pointer group">
+                    <label class="flex items-start gap-4 cursor-pointer group topic-item">
                         <input type="checkbox" class="checkbox-custom mt-1" data-chapter="4">
-                        <span class="text-gray-300 text-sm group-hover:text-white transition-colors">OLAP</span>
+                        <span class="text-slate-300 text-sm leading-relaxed group-hover:text-white transition-colors">Explain OLAP</span>
                     </label>
-                    <label class="flex items-start gap-3 cursor-pointer group">
+                    <label class="flex items-start gap-4 cursor-pointer group topic-item">
                         <input type="checkbox" class="checkbox-custom mt-1" data-chapter="4">
-                        <span class="text-gray-300 text-sm group-hover:text-white transition-colors">k-means Algorithm</span>
+                        <span class="text-slate-300 text-sm leading-relaxed group-hover:text-white transition-colors">Explain k-means Algorithm</span>
                     </label>
-                    <label class="flex items-start gap-3 cursor-pointer group">
+                    <label class="flex items-start gap-4 cursor-pointer group topic-item">
                         <input type="checkbox" class="checkbox-custom mt-1" data-chapter="4">
-                        <span class="text-gray-300 text-sm group-hover:text-white transition-colors">BIRCH algorithm</span>
+                        <span class="text-slate-300 text-sm leading-relaxed group-hover:text-white transition-colors">Explain BIRCH algorithm</span>
                     </label>
-                    <label class="flex items-start gap-3 cursor-pointer group">
+                    <label class="flex items-start gap-4 cursor-pointer group topic-item">
                         <input type="checkbox" class="checkbox-custom mt-1" data-chapter="4">
-                        <span class="text-gray-300 text-sm group-hover:text-white transition-colors">Note on Counting Co-occurrences</span>
+                        <span class="text-slate-300 text-sm leading-relaxed group-hover:text-white transition-colors">Note on Counting Co-occurrences</span>
                     </label>
-                    <label class="flex items-start gap-3 cursor-pointer group">
+                    <label class="flex items-start gap-4 cursor-pointer group topic-item">
                         <input type="checkbox" class="checkbox-custom mt-1" data-chapter="4">
-                        <span class="text-gray-300 text-sm group-hover:text-white transition-colors">Note on mining for rule</span>
+                        <span class="text-slate-300 text-sm leading-relaxed group-hover:text-white transition-colors">Note on mining for rule</span>
                     </label>
                 </div>
             </div>
 
             <!-- Chapter 5 -->
-            <div class="chapter-card rounded-xl p-6 shadow-xl">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-xl font-bold text-white">Chapter 5</h2>
-                    <span class="text-emerald-400 font-semibold" id="ch5-count">0/2</span>
+            <div class="glass chapter-card rounded-2xl p-7 animate-in">
+                <div class="flex items-center justify-between mb-5 pb-4 border-b border-slate-700/50">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">Chapter 5</h2>
+                        <p class="text-emerald-400 text-sm font-semibold mt-1">Information Retrieval</p>
+                    </div>
+                    <span class="text-emerald-400 font-bold text-lg stat-box px-4 py-2 rounded-xl" id="ch5-count">0/2</span>
                 </div>
-                <h3 class="text-emerald-400 font-semibold mb-4">Information Retrieval</h3>
-                <div class="space-y-3">
-                    <label class="flex items-start gap-3 cursor-pointer group">
+                <div class="space-y-2">
+                    <label class="flex items-start gap-4 cursor-pointer group topic-item">
                         <input type="checkbox" class="checkbox-custom mt-1" data-chapter="5">
-                        <span class="text-gray-300 text-sm group-hover:text-white transition-colors">Information retrieval</span>
+                        <span class="text-slate-300 text-sm leading-relaxed group-hover:text-white transition-colors">Explain information retrieval</span>
                     </label>
-                    <label class="flex items-start gap-3 cursor-pointer group">
+                    <label class="flex items-start gap-4 cursor-pointer group topic-item">
                         <input type="checkbox" class="checkbox-custom mt-1" data-chapter="5">
-                        <span class="text-gray-300 text-sm group-hover:text-white transition-colors">Note on Web Mining-Crawler</span>
+                        <span class="text-slate-300 text-sm leading-relaxed group-hover:text-white transition-colors">Note on Web Mining-Crawler</span>
                     </label>
                 </div>
             </div>
 
             <!-- Chapter 6 -->
-            <div class="chapter-card rounded-xl p-6 shadow-xl">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-xl font-bold text-white">Chapter 6</h2>
-                    <span class="text-emerald-400 font-semibold" id="ch6-count">0/4</span>
+            <div class="glass chapter-card rounded-2xl p-7 animate-in">
+                <div class="flex items-center justify-between mb-5 pb-4 border-b border-slate-700/50">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">Chapter 6</h2>
+                        <p class="text-emerald-400 text-sm font-semibold mt-1">Advanced Topics</p>
+                    </div>
+                    <span class="text-emerald-400 font-bold text-lg stat-box px-4 py-2 rounded-xl" id="ch6-count">0/5</span>
                 </div>
-                <h3 class="text-emerald-400 font-semibold mb-4">Advanced Topics</h3>
-                <div class="space-y-3">
-                    <label class="flex items-start gap-3 cursor-pointer group">
+                <div class="space-y-2">
+                    <label class="flex items-start gap-4 cursor-pointer group topic-item">
                         <input type="checkbox" class="checkbox-custom mt-1" data-chapter="6">
-                        <span class="text-gray-300 text-sm group-hover:text-white transition-colors">Transaction Processing Monitor architecture</span>
+                        <span class="text-slate-300 text-sm leading-relaxed group-hover:text-white transition-colors">Explain Transaction Processing Monitor architecture</span>
                     </label>
-                    <label class="flex items-start gap-3 cursor-pointer group">
+                    <label class="flex items-start gap-4 cursor-pointer group topic-item">
                         <input type="checkbox" class="checkbox-custom mt-1" data-chapter="6">
-                        <span class="text-gray-300 text-sm group-hover:text-white transition-colors">Transaction Workflow</span>
+                        <span class="text-slate-300 text-sm leading-relaxed group-hover:text-white transition-colors">Explain Transaction Workflow</span>
                     </label>
-                    <label class="flex items-start gap-3 cursor-pointer group">
+                    <label class="flex items-start gap-4 cursor-pointer group topic-item">
                         <input type="checkbox" class="checkbox-custom mt-1" data-chapter="6">
-                        <span class="text-gray-300 text-sm group-hover:text-white transition-colors">Main Memory Databases</span>
+                        <span class="text-slate-300 text-sm leading-relaxed group-hover:text-white transition-colors">Explain Main Memory Databases</span>
                     </label>
-                    <label class="flex items-start gap-3 cursor-pointer group">
+                    <label class="flex items-start gap-4 cursor-pointer group topic-item">
                         <input type="checkbox" class="checkbox-custom mt-1" data-chapter="6">
-                        <span class="text-gray-300 text-sm group-hover:text-white transition-colors">Real-Time transactions system</span>
+                        <span class="text-slate-300 text-sm leading-relaxed group-hover:text-white transition-colors">Explain Real-Time transactions system</span>
+                    </label>
+                    <label class="flex items-start gap-4 cursor-pointer group topic-item">
+                        <input type="checkbox" class="checkbox-custom mt-1" data-chapter="6">
+                        <span class="text-slate-300 text-sm leading-relaxed group-hover:text-white transition-colors">Explain Long duration Transactions</span>
                     </label>
                 </div>
             </div>
         </div>
 
-        <!-- Save Button -->
-        <div class="glass-effect rounded-2xl p-6 shadow-2xl">
-            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+        <!-- Footer with Save Button -->
+        <div class="glass-strong rounded-3xl p-8 shadow-2xl">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
                 <div class="text-center md:text-left">
-                    <p class="text-gray-400 text-sm mb-1">Last saved: <span id="lastSaved" class="text-emerald-400">Never</span></p>
-                    <p class="text-gray-500 text-xs">Your progress is automatically saved</p>
+                    <p class="text-slate-300 text-sm mb-2">Last saved: <span id="lastSaved" class="text-emerald-400 font-semibold">Never</span></p>
+                    <p class="text-slate-400 text-xs">✨ Your progress is automatically saved on every change</p>
                 </div>
-                <button id="saveBtn" class="bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white font-semibold py-3 px-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-emerald-500/50 hover:scale-105 active:scale-95">
+                <button id="saveBtn" class="btn-primary text-white font-bold py-4 px-10 rounded-2xl w-full md:w-auto text-lg">
                     💾 Save Progress
                 </button>
             </div>
@@ -306,45 +453,51 @@
         const lastSaved = document.getElementById('lastSaved');
 
         const totalTopics = checkboxes.length;
-        const circumference = 2 * Math.PI * 36;
+        const circumference = 2 * Math.PI * 40;
 
-        // Load saved progress
         function loadProgress() {
-            const saved = JSON.parse(localStorage.getItem('dbStudyProgress') || '{}');
-            checkboxes.forEach((checkbox, index) => {
-                if (saved[index]) {
-                    checkbox.checked = true;
+            try {
+                const saved = JSON.parse(localStorage.getItem('dbStudyProgress') || '{}');
+                checkboxes.forEach((checkbox, index) => {
+                    if (saved[index]) {
+                        checkbox.checked = true;
+                    }
+                });
+                if (saved.lastSaved) {
+                    lastSaved.textContent = saved.lastSaved;
                 }
-            });
-            if (saved.lastSaved) {
-                lastSaved.textContent = saved.lastSaved;
+            } catch (e) {
+                console.log('Loading local data...');
             }
             updateAllProgress();
         }
 
-        // Save progress
         function saveProgress() {
-            const progress = {};
-            checkboxes.forEach((checkbox, index) => {
-                progress[index] = checkbox.checked;
-            });
-            progress.lastSaved = new Date().toLocaleString('en-IN', {
-                day: '2-digit',
-                month: 'short',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-            localStorage.setItem('dbStudyProgress', JSON.stringify(progress));
-            lastSaved.textContent = progress.lastSaved;
-            
-            // Button animation
-            saveBtn.innerHTML = '✅ Saved!';
-            setTimeout(() => {
-                saveBtn.innerHTML = '💾 Save Progress';
-            }, 2000);
+            try {
+                const progress = {};
+                checkboxes.forEach((checkbox, index) => {
+                    progress[index] = checkbox.checked;
+                });
+                progress.lastSaved = new Date().toLocaleString('en-IN', {
+                    day: '2-digit',
+                    month: 'short',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                localStorage.setItem('dbStudyProgress', JSON.stringify(progress));
+                lastSaved.textContent = progress.lastSaved;
+                
+                saveBtn.innerHTML = '✅ Saved!';
+                saveBtn.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    saveBtn.innerHTML = '💾 Save Progress';
+                    saveBtn.style.transform = 'scale(1)';
+                }, 2000);
+            } catch (e) {
+                console.log('Saving data...');
+            }
         }
 
-        // Update chapter count
         function updateChapterCount(chapter) {
             const chapterCheckboxes = document.querySelectorAll(`[data-chapter="${chapter}"]`);
             const checked = Array.from(chapterCheckboxes).filter(cb => cb.checked).length;
@@ -352,7 +505,6 @@
             document.getElementById(`ch${chapter}-count`).textContent = `${checked}/${total}`;
         }
 
-        // Update all progress
         function updateAllProgress() {
             const checked = Array.from(checkboxes).filter(cb => cb.checked).length;
             const percentage = Math.round((checked / totalTopics) * 100);
@@ -368,17 +520,15 @@
             }
         }
 
-        // Event listeners
         checkboxes.forEach(checkbox => {
             checkbox.addEventListener('change', () => {
                 updateAllProgress();
-                saveProgress(); // Auto-save on change
+                saveProgress();
             });
         });
 
         saveBtn.addEventListener('click', saveProgress);
 
-        // Initialize
         progressRing.style.strokeDasharray = circumference;
         loadProgress();
     </script>
